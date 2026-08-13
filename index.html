@@ -239,6 +239,74 @@
   .targets-panel.open{ display:grid; grid-template-columns: 1fr 1fr; gap:8px; }
   .targets-panel label{ font-size:11px; color: var(--text-secondary); display:flex; flex-direction:column; gap:4px; }
   .targets-panel input{ padding:6px 8px; font-size:13px; }
+
+  select{
+    width:100%; font-size:14px; padding:10px 12px; border-radius: var(--radius-sm);
+    border: 1.5px solid var(--gridline); background: var(--surface-1); color: var(--text-primary);
+    font-family: inherit;
+  }
+
+  .session-panel{ display:none; margin-top:-4px; margin-bottom:14px; padding-top:10px; border-top:1px dashed var(--gridline); }
+  .session-panel.open{ display:block; }
+  .session-panel h3{ font-size:12px; margin:0 0 10px; color: var(--text-secondary); font-weight:700; text-transform:uppercase; letter-spacing:0.03em; }
+
+  .exercise-list{ display:flex; flex-direction:column; gap:8px; margin-bottom:12px; }
+  .exercise-item{
+    display:flex; align-items:center; gap:8px; background: var(--surface-1); border:1px solid var(--gridline);
+    border-radius: var(--radius-sm); padding:8px 10px; font-size:13px;
+  }
+  .exercise-item .ex-name{ flex:1; font-weight:600; }
+  .exercise-item .ex-meta{ color: var(--text-secondary); font-size:12px; white-space:nowrap; }
+  .exercise-item .ex-remove{
+    border:none; background:transparent; color: var(--critical); font-size:16px; cursor:pointer; padding:0 4px; line-height:1;
+  }
+  .ex-tag{
+    display:inline-block; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.02em;
+    padding:2px 6px; border-radius:999px; color:#fff; margin-right:6px;
+  }
+
+  .add-exercise-row{ display:flex; flex-direction:column; gap:8px; background: var(--surface-1); border:1px solid var(--gridline); border-radius: var(--radius-sm); padding:10px; }
+  .add-exercise-grid{ display:grid; grid-template-columns: 1fr 1fr 1fr; gap:8px; }
+  .add-exercise-grid input{ padding:8px; font-size:13px; }
+  .add-exercise-row button{ margin-top:0; }
+
+  .muscle-meters .meter-label{ width:90px; }
+
+  .food-search-row{ display:flex; gap:8px; margin-bottom:10px; }
+  .food-search-row input{ flex:1; }
+  .food-search-row button{ margin-top:0; padding:0 16px; border-radius: var(--radius-sm); border:none; background: var(--gym); color:#fff; font-weight:700; cursor:pointer; }
+  .food-results{ display:flex; flex-direction:column; gap:6px; margin-bottom:14px; max-height:260px; overflow-y:auto; }
+  .food-result{
+    display:flex; align-items:center; gap:8px; background: var(--surface-1); border:1px solid var(--gridline);
+    border-radius: var(--radius-sm); padding:8px 10px; font-size:13px;
+  }
+  .food-result .fr-info{ flex:1; min-width:0; }
+  .food-result .fr-name{ font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .food-result .fr-sub{ font-size:11px; color: var(--text-secondary); }
+  .food-result button{
+    flex-shrink:0; border:none; background: var(--gym); color:#fff; border-radius: var(--radius-sm);
+    padding:6px 10px; font-size:12px; font-weight:700; cursor:pointer;
+  }
+  .food-status{ font-size:12px; color: var(--text-muted); margin-bottom:10px; min-height:14px; }
+
+  .manual-food-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-bottom:10px; }
+
+  .food-log{ display:flex; flex-direction:column; gap:6px; margin-top:12px; margin-bottom:12px; }
+  .food-log-item{
+    display:flex; align-items:center; gap:8px; background: var(--surface-1); border:1px solid var(--gridline);
+    border-radius: var(--radius-sm); padding:8px 10px; font-size:13px;
+  }
+  .food-log-item .fl-info{ flex:1; min-width:0; }
+  .food-log-item .fl-name{ font-weight:600; }
+  .food-log-item .fl-sub{ font-size:11px; color: var(--text-secondary); }
+
+  .macro-row{ display:flex; gap:8px; margin-top:10px; }
+  .macro-tile{ flex:1; text-align:center; background: var(--surface-1); border:1px solid var(--gridline); border-radius: var(--radius-sm); padding:8px 4px; }
+  .macro-tile .mv{ font-size:15px; font-weight:700; }
+  .macro-tile .ml{ font-size:10px; color: var(--text-muted); text-transform:uppercase; }
+
+  .kcal-meter{ margin-top:10px; }
+  .kcal-meter .meter-track{ height:10px; }
 </style>
 </head>
 <body>
@@ -274,6 +342,37 @@
         <div class="chip" data-act="yoga" data-active="false"><span class="dot"></span>Yoga</div>
       </div>
     </div>
+
+    <div class="session-panel" id="gymPanel">
+      <h3>🏋️ Gym-Übungen</h3>
+      <div class="exercise-list" id="gymExerciseList"></div>
+      <div class="add-exercise-row">
+        <select id="gymExerciseSelect"></select>
+        <input type="text" id="gymCustomName" placeholder="Eigene Übung (optional)" style="display:none;">
+        <select id="gymCustomGroup" style="display:none;"></select>
+        <div class="add-exercise-grid">
+          <input type="number" min="1" id="gymSets" placeholder="Sätze">
+          <input type="number" min="1" id="gymReps" placeholder="Wdh.">
+          <input type="number" min="0" step="0.5" id="gymWeight" placeholder="kg (optional)">
+        </div>
+        <button class="secondary" id="gymAddExercise">+ Übung hinzufügen</button>
+      </div>
+    </div>
+
+    <div class="session-panel" id="yogaPanel">
+      <h3>🧘 Yoga-Übungen</h3>
+      <div class="exercise-list" id="yogaExerciseList"></div>
+      <div class="add-exercise-row">
+        <select id="yogaExerciseSelect"></select>
+        <input type="text" id="yogaCustomName" placeholder="Eigene Übung/Pose (optional)" style="display:none;">
+        <div class="add-exercise-grid">
+          <input type="number" min="1" id="yogaSets" placeholder="Sätze/Runden">
+          <input type="number" min="1" id="yogaReps" placeholder="Wdh./Atemzüge">
+        </div>
+        <button class="secondary" id="yogaAddExercise">+ Übung hinzufügen</button>
+      </div>
+    </div>
+
     <div class="row">
       <label class="field-label">Intensität</label>
       <input type="range" min="1" max="10" value="5" id="intensitySlider">
@@ -338,6 +437,11 @@
   </div>
 
   <div class="card">
+    <h2>💪 Muskelgruppen-Abdeckung <span class="n">Ziel: 2×/Woche</span></h2>
+    <div id="muscleMeters"></div>
+  </div>
+
+  <div class="card">
     <h2>🏃 Ausdauerstatistik <span class="n">diese Woche</span></h2>
     <div class="two-col" style="margin-bottom:12px;">
       <div>
@@ -372,6 +476,48 @@
         <div class="value" id="swimTotal">0 min</div>
         <div class="sub" id="swimLapsTotal">0 Bahnen</div>
       </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🍽️ Kalorien <span class="n" id="kcalDateSmall"></span></h2>
+    <div class="row">
+      <label class="field-label">Tagesziel (kcal)</label>
+      <input type="number" min="0" step="50" id="kcalTarget" placeholder="z. B. 2200">
+    </div>
+    <div class="food-search-row">
+      <input type="text" id="foodSearchInput" placeholder="Lebensmittel suchen (Open Food Facts)…">
+      <button id="foodSearchBtn">Suchen</button>
+    </div>
+    <div class="food-status" id="foodStatus"></div>
+    <div class="food-results" id="foodResults"></div>
+
+    <div class="settings-toggle" id="manualFoodToggle">Manuell eintragen</div>
+    <div class="targets-panel" id="manualFoodPanel">
+      <div class="manual-food-grid" style="grid-column: 1 / -1;">
+        <input type="text" id="manualFoodName" placeholder="Bezeichnung">
+        <input type="number" min="0" step="1" id="manualFoodGrams" placeholder="Menge (g)">
+        <input type="number" min="0" step="1" id="manualFoodKcal" placeholder="kcal">
+        <input type="number" min="0" step="0.1" id="manualFoodProtein" placeholder="Protein (g)">
+        <input type="number" min="0" step="0.1" id="manualFoodCarbs" placeholder="Kohlenhydrate (g)">
+        <input type="number" min="0" step="0.1" id="manualFoodFat" placeholder="Fett (g)">
+      </div>
+      <button class="secondary" id="manualFoodAdd" style="grid-column: 1 / -1;">+ Hinzufügen</button>
+    </div>
+
+    <div class="food-log" id="foodLog"></div>
+
+    <div class="kcal-meter">
+      <div class="meter-row">
+        <div class="meter-label">Kalorien</div>
+        <div class="meter-track"><div class="meter-fill" id="kcalMeterFill" style="width:0%; background:var(--gym)"></div></div>
+        <div class="meter-count" id="kcalMeterCount">0/0</div>
+      </div>
+    </div>
+    <div class="macro-row">
+      <div class="macro-tile"><div class="mv" id="macroProtein">0g</div><div class="ml">Protein</div></div>
+      <div class="macro-tile"><div class="mv" id="macroCarbs">0g</div><div class="ml">Kohlenhydrate</div></div>
+      <div class="macro-tile"><div class="mv" id="macroFat">0g</div><div class="ml">Fett</div></div>
     </div>
   </div>
 
@@ -425,9 +571,44 @@
   var DOW = ["Mo","Di","Mi","Do","Fr","Sa","So"];
   var MONTHS = ["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
 
+  var MUSCLE_GROUPS = ["brust","ruecken","schultern","arme","beine","gesaess","bauch"];
+  var MUSCLE_LABEL = {brust:"Brust", ruecken:"Rücken", schultern:"Schultern", arme:"Arme", beine:"Beine", gesaess:"Gesäß", bauch:"Bauch"};
+  var MUSCLE_COLOR = {brust:"#2a78d6", ruecken:"#eb6834", schultern:"#1baf7a", arme:"#4a3aa7", beine:"#e34948", gesaess:"#e87ba4", bauch:"#008300"};
+
+  var GYM_EXERCISES = [
+    {name:"Bankdrücken", group:"brust"},
+    {name:"Kurzhantel Fliegende", group:"brust"},
+    {name:"Liegestütze", group:"brust"},
+    {name:"Klimmzüge", group:"ruecken"},
+    {name:"Latzug", group:"ruecken"},
+    {name:"Rudern vorgebeugt", group:"ruecken"},
+    {name:"Kreuzheben", group:"ruecken"},
+    {name:"Schulterdrücken", group:"schultern"},
+    {name:"Seitheben", group:"schultern"},
+    {name:"Frontheben", group:"schultern"},
+    {name:"Bizepscurls", group:"arme"},
+    {name:"Trizepsdrücken", group:"arme"},
+    {name:"Hammercurls", group:"arme"},
+    {name:"Kniebeugen", group:"beine"},
+    {name:"Beinpresse", group:"beine"},
+    {name:"Ausfallschritte", group:"beine"},
+    {name:"Beinbeuger", group:"beine"},
+    {name:"Wadenheben", group:"beine"},
+    {name:"Hüftstoßen", group:"gesaess"},
+    {name:"Kickbacks", group:"gesaess"},
+    {name:"Crunches", group:"bauch"},
+    {name:"Plank", group:"bauch"},
+    {name:"Russian Twists", group:"bauch"}
+  ];
+
+  var YOGA_POSES = [
+    "Sonnengruß", "Herabschauender Hund", "Krieger I", "Krieger II", "Baum",
+    "Kobra", "Kindhaltung", "Taube", "Brücke", "Katze-Kuh", "Dreieck", "Stuhlhaltung"
+  ];
+
   var defaultState = {
     entries: {},
-    targets: {gym:3, running:2, swimming:1, yoga:3}
+    targets: {gym:3, running:2, swimming:1, yoga:3, kcal:2200}
   };
 
   function loadState(){
@@ -464,7 +645,12 @@
   }
   function getEntry(key){
     if(!state.entries[key]) state.entries[key] = {activities:[], intensity:null, mood:null, note:"", weight:null, bodyFat:null, run:null, swim:null};
-    return state.entries[key];
+    var e = state.entries[key];
+    if(!e.gym) e.gym = {exercises:[]};
+    if(!e.yoga) e.yoga = {exercises:[]};
+    if(!e.nutrition) e.nutrition = {items:[]};
+    if(state.targets.kcal == null) state.targets.kcal = 2200;
+    return e;
   }
 
   function renderCountdown(){
@@ -492,6 +678,9 @@
       var act = chip.getAttribute("data-act");
       chip.setAttribute("data-active", e.activities.indexOf(act) > -1 ? "true" : "false");
     });
+    updateSessionPanels();
+    renderExerciseList("gym");
+    renderExerciseList("yoga");
     document.getElementById("intensitySlider").value = e.intensity || 5;
     document.getElementById("intensityValue").textContent = e.intensity || 5;
     selectedMood = e.mood || null;
@@ -537,7 +726,15 @@
     if(!chip) return;
     var active = chip.getAttribute("data-active") === "true";
     chip.setAttribute("data-active", active ? "false" : "true");
+    updateSessionPanels();
   });
+
+  function updateSessionPanels(){
+    var gymActive = document.querySelector('.chip[data-act="gym"]').getAttribute("data-active") === "true";
+    var yogaActive = document.querySelector('.chip[data-act="yoga"]').getAttribute("data-active") === "true";
+    document.getElementById("gymPanel").classList.toggle("open", gymActive);
+    document.getElementById("yogaPanel").classList.toggle("open", yogaActive);
+  }
 
   document.getElementById("intensitySlider").addEventListener("input", function(){
     document.getElementById("intensityValue").textContent = this.value;
@@ -592,6 +789,298 @@
     renderEndurance();
   });
 
+  // ---------- Gym / Yoga exercise sessions ----------
+  function populateExerciseSelects(){
+    var gymSel = document.getElementById("gymExerciseSelect");
+    gymSel.innerHTML = "";
+    MUSCLE_GROUPS.forEach(function(g){
+      var group = document.createElement("optgroup");
+      group.label = MUSCLE_LABEL[g];
+      GYM_EXERCISES.filter(function(ex){ return ex.group === g; }).forEach(function(ex){
+        var opt = document.createElement("option");
+        opt.value = ex.name; opt.setAttribute("data-group", ex.group);
+        opt.textContent = ex.name;
+        group.appendChild(opt);
+      });
+      gymSel.appendChild(group);
+    });
+    var customOpt = document.createElement("option");
+    customOpt.value = "__custom__";
+    customOpt.textContent = "Eigene Übung…";
+    gymSel.appendChild(customOpt);
+
+    var gymGroupSel = document.getElementById("gymCustomGroup");
+    gymGroupSel.innerHTML = "";
+    MUSCLE_GROUPS.forEach(function(g){
+      var opt = document.createElement("option");
+      opt.value = g; opt.textContent = MUSCLE_LABEL[g];
+      gymGroupSel.appendChild(opt);
+    });
+
+    var yogaSel = document.getElementById("yogaExerciseSelect");
+    yogaSel.innerHTML = "";
+    YOGA_POSES.forEach(function(p){
+      var opt = document.createElement("option");
+      opt.value = p; opt.textContent = p;
+      yogaSel.appendChild(opt);
+    });
+    var yogaCustomOpt = document.createElement("option");
+    yogaCustomOpt.value = "__custom__";
+    yogaCustomOpt.textContent = "Eigene Übung/Pose…";
+    yogaSel.appendChild(yogaCustomOpt);
+  }
+
+  document.getElementById("gymExerciseSelect").addEventListener("change", function(){
+    var isCustom = this.value === "__custom__";
+    document.getElementById("gymCustomName").style.display = isCustom ? "block" : "none";
+    document.getElementById("gymCustomGroup").style.display = isCustom ? "block" : "none";
+  });
+  document.getElementById("yogaExerciseSelect").addEventListener("change", function(){
+    document.getElementById("yogaCustomName").style.display = this.value === "__custom__" ? "block" : "none";
+  });
+
+  function renderExerciseList(kind){
+    var key = fmtKey(currentDate);
+    var e = getEntry(key);
+    var listEl = document.getElementById(kind === "gym" ? "gymExerciseList" : "yogaExerciseList");
+    var exercises = e[kind].exercises;
+    listEl.innerHTML = "";
+    if(exercises.length === 0){
+      var empty = document.createElement("div");
+      empty.style.cssText = "font-size:12px; color:var(--text-muted);";
+      empty.textContent = "Noch keine Übungen für heute.";
+      listEl.appendChild(empty);
+      return;
+    }
+    exercises.forEach(function(ex, idx){
+      var row = document.createElement("div");
+      row.className = "exercise-item";
+      var tag = "";
+      if(kind === "gym"){
+        tag = '<span class="ex-tag" style="background:'+MUSCLE_COLOR[ex.group]+'">'+MUSCLE_LABEL[ex.group]+'</span>';
+      }
+      var weightTxt = (kind === "gym" && ex.weight) ? (" · "+ex.weight+" kg") : "";
+      row.innerHTML = tag + '<span class="ex-name">'+ex.name+'</span>' +
+        '<span class="ex-meta">'+ex.sets+' × '+ex.reps+weightTxt+'</span>' +
+        '<button class="ex-remove" data-idx="'+idx+'">✕</button>';
+      listEl.appendChild(row);
+    });
+    listEl.querySelectorAll(".ex-remove").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var idx = +this.getAttribute("data-idx");
+        var key2 = fmtKey(currentDate);
+        var e2 = getEntry(key2);
+        e2[kind].exercises.splice(idx, 1);
+        saveState();
+        renderExerciseList(kind);
+        if(kind === "gym") renderMuscleMeters();
+      });
+    });
+  }
+
+  document.getElementById("gymAddExercise").addEventListener("click", function(){
+    var sel = document.getElementById("gymExerciseSelect");
+    var isCustom = sel.value === "__custom__";
+    var name = isCustom ? document.getElementById("gymCustomName").value.trim() : sel.value;
+    var group = isCustom ? document.getElementById("gymCustomGroup").value : sel.selectedOptions[0].getAttribute("data-group");
+    var sets = +document.getElementById("gymSets").value;
+    var reps = +document.getElementById("gymReps").value;
+    var weight = document.getElementById("gymWeight").value;
+    if(!name || !sets || !reps){ alert("Bitte Übung, Sätze und Wiederholungen angeben."); return; }
+    var key = fmtKey(currentDate);
+    var e = getEntry(key);
+    e.gym.exercises.push({name:name, group:group, sets:sets, reps:reps, weight: weight === "" ? null : parseFloat(weight)});
+    if(e.activities.indexOf("gym") === -1) e.activities.push("gym");
+    saveState();
+    document.getElementById("gymSets").value = "";
+    document.getElementById("gymReps").value = "";
+    document.getElementById("gymWeight").value = "";
+    document.getElementById("gymCustomName").value = "";
+    renderExerciseList("gym");
+    renderMuscleMeters();
+    renderTrainingForm();
+    renderWeekMeters();
+    renderStreak();
+    renderCalendar();
+  });
+
+  document.getElementById("yogaAddExercise").addEventListener("click", function(){
+    var sel = document.getElementById("yogaExerciseSelect");
+    var isCustom = sel.value === "__custom__";
+    var name = isCustom ? document.getElementById("yogaCustomName").value.trim() : sel.value;
+    var sets = +document.getElementById("yogaSets").value;
+    var reps = +document.getElementById("yogaReps").value;
+    if(!name || !sets || !reps){ alert("Bitte Übung, Sätze und Wiederholungen angeben."); return; }
+    var key = fmtKey(currentDate);
+    var e = getEntry(key);
+    e.yoga.exercises.push({name:name, sets:sets, reps:reps});
+    if(e.activities.indexOf("yoga") === -1) e.activities.push("yoga");
+    saveState();
+    document.getElementById("yogaSets").value = "";
+    document.getElementById("yogaReps").value = "";
+    document.getElementById("yogaCustomName").value = "";
+    renderExerciseList("yoga");
+    renderTrainingForm();
+    renderWeekMeters();
+    renderStreak();
+    renderCalendar();
+  });
+
+  function renderMuscleMeters(){
+    var wStart = startOfWeek(currentDate);
+    var counts = {};
+    MUSCLE_GROUPS.forEach(function(g){ counts[g] = 0; });
+    for(var i=0;i<7;i++){
+      var d = new Date(wStart); d.setDate(wStart.getDate()+i);
+      var e = state.entries[fmtKey(d)];
+      if(e && e.gym && e.gym.exercises && e.gym.exercises.length){
+        var groupsToday = {};
+        e.gym.exercises.forEach(function(ex){ groupsToday[ex.group] = true; });
+        Object.keys(groupsToday).forEach(function(g){ if(counts[g] != null) counts[g]++; });
+      }
+    }
+    var wrap = document.getElementById("muscleMeters");
+    if(!wrap) return;
+    wrap.innerHTML = "";
+    MUSCLE_GROUPS.forEach(function(g){
+      var count = counts[g];
+      var target = 2;
+      var pct = Math.min(100, Math.round(count/target*100));
+      var row = document.createElement("div");
+      row.className = "meter-row muscle-meters";
+      row.innerHTML = '<div class="meter-label">'+MUSCLE_LABEL[g]+'</div>'+
+        '<div class="meter-track"><div class="meter-fill" style="width:'+pct+'%; background:'+MUSCLE_COLOR[g]+'"></div></div>'+
+        '<div class="meter-count">'+count+'/'+target+'</div>';
+      wrap.appendChild(row);
+    });
+  }
+
+  // ---------- Nutrition / calories ----------
+  document.getElementById("kcalTarget").addEventListener("change", function(){
+    state.targets.kcal = Math.max(0, parseInt(this.value || "0", 10));
+    saveState();
+    renderNutrition();
+  });
+
+  document.getElementById("foodSearchBtn").addEventListener("click", searchFood);
+  document.getElementById("foodSearchInput").addEventListener("keydown", function(ev){
+    if(ev.key === "Enter"){ ev.preventDefault(); searchFood(); }
+  });
+
+  function searchFood(){
+    var query = document.getElementById("foodSearchInput").value.trim();
+    var statusEl = document.getElementById("foodStatus");
+    var resultsEl = document.getElementById("foodResults");
+    if(!query){ return; }
+    statusEl.textContent = "Suche läuft…";
+    resultsEl.innerHTML = "";
+    var url = "https://world.openfoodfacts.org/cgi/search.pl?search_terms=" + encodeURIComponent(query) +
+      "&search_simple=1&action=process&json=1&page_size=8&fields=product_name,brands,nutriments";
+    fetch(url).then(function(res){ return res.json(); }).then(function(data){
+      var products = (data.products || []).filter(function(p){ return p.product_name && p.nutriments && p.nutriments["energy-kcal_100g"] != null; });
+      if(products.length === 0){
+        statusEl.textContent = "Keine Treffer. Du kannst den Eintrag manuell hinzufügen.";
+        return;
+      }
+      statusEl.textContent = products.length + " Treffer:";
+      products.forEach(function(p, idx){
+        var kcal100 = p.nutriments["energy-kcal_100g"];
+        var protein100 = p.nutriments["proteins_100g"] || 0;
+        var carbs100 = p.nutriments["carbohydrates_100g"] || 0;
+        var fat100 = p.nutriments["fat_100g"] || 0;
+        var row = document.createElement("div");
+        row.className = "food-result";
+        row.innerHTML = '<div class="fr-info"><div class="fr-name">'+p.product_name+'</div>'+
+          '<div class="fr-sub">'+(p.brands ? p.brands+" · " : "")+Math.round(kcal100)+' kcal/100g</div></div>'+
+          '<button data-idx="'+idx+'">+ hinzufügen</button>';
+        row.querySelector("button").addEventListener("click", function(){
+          var grams = prompt("Menge in Gramm:", "100");
+          if(grams === null) return;
+          grams = parseFloat(grams);
+          if(!grams || grams <= 0) return;
+          addFoodItem({
+            name: p.product_name,
+            grams: grams,
+            kcal: Math.round(kcal100 * grams / 100),
+            protein: Math.round(protein100 * grams / 100 * 10) / 10,
+            carbs: Math.round(carbs100 * grams / 100 * 10) / 10,
+            fat: Math.round(fat100 * grams / 100 * 10) / 10
+          });
+        });
+        resultsEl.appendChild(row);
+      });
+    }).catch(function(){
+      statusEl.textContent = "Suche fehlgeschlagen (keine Internetverbindung zur Datenbank?). Bitte manuell eintragen.";
+    });
+  }
+
+  document.getElementById("manualFoodToggle").addEventListener("click", function(){
+    document.getElementById("manualFoodPanel").classList.toggle("open");
+  });
+  document.getElementById("manualFoodAdd").addEventListener("click", function(){
+    var name = document.getElementById("manualFoodName").value.trim();
+    var grams = parseFloat(document.getElementById("manualFoodGrams").value) || 0;
+    var kcal = parseFloat(document.getElementById("manualFoodKcal").value) || 0;
+    var protein = parseFloat(document.getElementById("manualFoodProtein").value) || 0;
+    var carbs = parseFloat(document.getElementById("manualFoodCarbs").value) || 0;
+    var fat = parseFloat(document.getElementById("manualFoodFat").value) || 0;
+    if(!name || !kcal){ alert("Bitte mindestens Bezeichnung und kcal angeben."); return; }
+    addFoodItem({name:name, grams:grams, kcal:kcal, protein:protein, carbs:carbs, fat:fat});
+    ["manualFoodName","manualFoodGrams","manualFoodKcal","manualFoodProtein","manualFoodCarbs","manualFoodFat"].forEach(function(id){
+      document.getElementById(id).value = "";
+    });
+  });
+
+  function addFoodItem(item){
+    var key = fmtKey(currentDate);
+    var e = getEntry(key);
+    e.nutrition.items.push(item);
+    saveState();
+    renderNutrition();
+  }
+
+  function renderNutrition(){
+    var key = fmtKey(currentDate);
+    var e = getEntry(key);
+    document.getElementById("kcalDateSmall").textContent = document.getElementById("trainingDateSmall").textContent;
+    document.getElementById("kcalTarget").value = state.targets.kcal || "";
+
+    var logEl = document.getElementById("foodLog");
+    logEl.innerHTML = "";
+    var totalKcal = 0, totalProtein = 0, totalCarbs = 0, totalFat = 0;
+    e.nutrition.items.forEach(function(item, idx){
+      totalKcal += item.kcal || 0;
+      totalProtein += item.protein || 0;
+      totalCarbs += item.carbs || 0;
+      totalFat += item.fat || 0;
+      var row = document.createElement("div");
+      row.className = "food-log-item";
+      row.innerHTML = '<div class="fl-info"><div class="fl-name">'+item.name+'</div>'+
+        '<div class="fl-sub">'+(item.grams ? item.grams+"g · " : "")+item.kcal+' kcal</div></div>'+
+        '<button class="ex-remove" data-idx="'+idx+'">✕</button>';
+      logEl.appendChild(row);
+    });
+    logEl.querySelectorAll(".ex-remove").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var idx = +this.getAttribute("data-idx");
+        var key2 = fmtKey(currentDate);
+        var e2 = getEntry(key2);
+        e2.nutrition.items.splice(idx, 1);
+        saveState();
+        renderNutrition();
+      });
+    });
+
+    var target = state.targets.kcal || 0;
+    var pct = target > 0 ? Math.min(100, Math.round(totalKcal/target*100)) : 0;
+    document.getElementById("kcalMeterFill").style.width = pct + "%";
+    document.getElementById("kcalMeterCount").textContent = Math.round(totalKcal) + "/" + target;
+    document.getElementById("macroProtein").textContent = Math.round(totalProtein) + "g";
+    document.getElementById("macroCarbs").textContent = Math.round(totalCarbs) + "g";
+    document.getElementById("macroFat").textContent = Math.round(totalFat) + "g";
+  }
+
+  // ---------- Body stats ----------
   function renderBodyStats(){
     var keys = Object.keys(state.entries).filter(function(k){ return state.entries[k].weight != null; }).sort();
     var cur = keys.length ? state.entries[keys[keys.length-1]].weight : null;
@@ -610,6 +1099,7 @@
     }
   }
 
+  // ---------- Week meters ----------
   function renderWeekMeters(){
     var wStart = startOfWeek(currentDate);
     var wEnd = new Date(wStart); wEnd.setDate(wStart.getDate()+6);
@@ -656,6 +1146,7 @@
     });
   });
 
+  // ---------- Endurance ----------
   function renderEndurance(){
     var wStart = startOfWeek(currentDate);
     var totalDist = 0, totalRunDur = 0, totalSwimDur = 0, totalLaps = 0;
@@ -685,6 +1176,7 @@
     return m + ":" + pad(s) + " min";
   }
 
+  // ---------- Streak ----------
   function computeStreaks(){
     var days = Object.keys(state.entries).filter(function(k){
       var e = state.entries[k];
@@ -720,6 +1212,7 @@
     document.getElementById("streakBadge").textContent = s.current;
   }
 
+  // ---------- Calendar ----------
   function renderCalendar(){
     document.getElementById("calMonthLabel").textContent = MONTHS[calMonth.getMonth()] + " " + calMonth.getFullYear();
     var grid = document.getElementById("calGrid");
@@ -768,6 +1261,7 @@
     calMonth.setMonth(calMonth.getMonth()+1); renderCalendar();
   });
 
+  // ---------- Export / Reset ----------
   document.getElementById("exportBtn").addEventListener("click", function(){
     var blob = new Blob([JSON.stringify(state, null, 2)], {type:"application/json"});
     var url = URL.createObjectURL(blob);
@@ -796,12 +1290,15 @@
     renderTrainingForm();
     renderBodyStats();
     renderWeekMeters();
+    renderMuscleMeters();
     renderEndurance();
+    renderNutrition();
     renderStreak();
     calMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
     renderCalendar();
   }
 
+  populateExerciseSelects();
   refreshAll();
 })();
 </script>
